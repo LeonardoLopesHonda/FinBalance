@@ -1,5 +1,7 @@
 # -- 🚧 _In Development_ 🚧 --
 
+![Lateral Text Logo](https://github.com/user-attachments/assets/f2d9946d-9e8b-482b-95ea-84e7ed4945d0)
+
 ## What is FinBalance?
 FinBalance is a website that has the purpose of assisting you on managing your finances through 
 registering expenses and providing analytics. 
