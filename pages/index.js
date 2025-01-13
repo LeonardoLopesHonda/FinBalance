@@ -1,4 +1,4 @@
-import styles from './css/app.module.css';
+import styles from './assets/css/app.module.css';
 
 function Home() {
   return <main className={styles.container}>
@@ -28,7 +28,7 @@ function Home() {
         <h2>In development</h2>
         <span className={styles.span}>&#128679;</span>
       </div>
-    </div>
+    </div> 
   </main>;
 }
 
