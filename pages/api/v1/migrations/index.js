@@ -9,34 +9,41 @@ export default async function migrations(request, response) {
       message: "Method Not Allowed"
     });
   }
-  const dbClient = await database.getNewClient();
-  const migrationsDefaultConfig = {
-    dbClient: dbClient,
-    dryRun: true,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
 
-  if (request.method == 'GET') {
-    const pendingMigrations = await migrationRunner(migrationsDefaultConfig);
-    await dbClient.end();
-    response.status(200).json(pendingMigrations);
-  }
+  let dbClient;
 
-  if (request.method == 'POST') {
-    const migratedMigrations = await migrationRunner({
-      ...migrationsDefaultConfig,
-      dryRun: false
-    });
+  try {
+    dbClient = await database.getNewClient();
+    const migrationsDefaultConfig = {
+      dbClient: dbClient,
+      dryRun: true,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
 
-    await dbClient.end();
-
-    if (migratedMigrations.length > 0) {
-      return response.status(201).json(migratedMigrations);
+    if (request.method == 'GET') {
+      const pendingMigrations = await migrationRunner(migrationsDefaultConfig);
+      response.status(200).json(pendingMigrations);
     }
 
-    response.status(200).json(migratedMigrations);
+    if (request.method == 'POST') {
+      const migratedMigrations = await migrationRunner({
+        ...migrationsDefaultConfig,
+        dryRun: false
+      });
+
+      if (migratedMigrations.length > 0) {
+        return response.status(201).json(migratedMigrations);
+      }
+
+      response.status(200).json(migratedMigrations);
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    await dbClient.end();
   }
 }
