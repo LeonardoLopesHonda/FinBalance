@@ -24,3 +24,10 @@ test("POST in /api/v1/migrations should return 200", async () => {
     expect(Array.isArray(response2Body)).toBe(true);
     expect(response2Body.length).toBe(0);
 });
+
+test("DELETE in /api/v1/migrations should return 405 (not allowed)", async () => {
+    const response = await fetch("http://localhost:3000/api/v1/migrations", {
+        method: "DELETE",
+    });
+    expect(response.status).toBe(405);
+});

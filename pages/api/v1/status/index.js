@@ -10,17 +10,15 @@ async function status(request, response) {
     values: [databaseName],
   })).rows[0].opened_connections;
 
-  console.log(updatedAt);
-
   response.status(200).json({
-      updated_at: updatedAt,
-      dependencies: {
-        database: {
-          version: version,
-          max_connections: max_connections,
-          opened_connections: opened_connections
-        },
+    updated_at: updatedAt,
+    dependencies: {
+      database: {
+        version: version,
+        max_connections: max_connections,
+        opened_connections: opened_connections
       },
+    },
   });
 }
 
