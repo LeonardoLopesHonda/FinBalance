@@ -14,7 +14,8 @@
     "services:down": "docker compose -f infra/compose.yaml down",
     "migration:create": "node-pg-migrate --migrations-dir infra/migrations create",
     "migration:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up",
-    "wait-for-postgres": "node infra/scripts/wait-for-postgres"
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres",
+    "concurrent:next-jest": "concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand\""
   },
   "author": "",
   "license": "MIT",
