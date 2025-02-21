@@ -1,36 +1,36 @@
 .container {
-    width: 98dvw;
-    height: 98dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
+  width: 98dvw;
+  height: 98dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
 }
 
 .card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-    width: 45%;
-    height: 40%;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 15px;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.14);
+  width: 45%;
+  height: 40%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.14);
 }
 
 .span {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .flex_center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .text {
-    font-size: larger;
-    font-weight: 100;
+  font-size: larger;
+  font-weight: 100;
 }
