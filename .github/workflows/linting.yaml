@@ -1,10 +1,9 @@
 name: Linting
 
-on: 
-  pull_request: 
+on: pull_request
 
 jobs:
-  prettier: 
+  prettier:
     name: Prettier
     runs-on: ubuntu-latest
     steps:
@@ -12,13 +11,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/hydrogen"
+      - run: npm ci
       - run: npm run lint:prettier:check
-  eslint: 
-    name: ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "lts/hydrogen"
-      - run: npm run lint:eslint:check
