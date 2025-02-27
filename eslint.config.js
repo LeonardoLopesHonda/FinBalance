@@ -24,6 +24,7 @@ module.exports = [
     rules: {
       semi: "error",
       "prefer-const": "error",
+      "no-unused-vars": "error",
       "reactPlugin/jsx-uses-react": "error",
       "reactPlugin/jsx-uses-vars": "error",
     },
