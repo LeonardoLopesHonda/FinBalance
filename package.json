@@ -4,7 +4,7 @@
   "description": "A website where you can manage your finances",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "dev": "node infra/scripts/run-dev",
     "test": "npm run services:up && npm run concurrent:next-jest",
     "posttest": "npm run services:stop",
     "test:watch": "jest --watchAll --runInBand",
