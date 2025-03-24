@@ -11,6 +11,7 @@ export default function StatusPage() {
     <>
       <h1>Status</h1>
       <UpdatedAt />
+      <DatabaseStatus />
     </>
   );
 }
@@ -20,26 +21,46 @@ function UpdatedAt() {
     refreshInterval: 2000,
   });
 
-  let UpdatedAt = "Carregando...";
-  let Database = {
-    version: "Carregando...",
-    max_connections: "Carregando...",
-    opened_connections: "Carregando...",
-  };
+  let loadingText = "Carregando...";
+  let UpdatedAt = loadingText;
 
   if (!isLoading && data) {
     UpdatedAt = new Date(data.updated_at).toLocaleString("pt-BR");
-    Database = data.dependencies.database;
   }
 
   return (
     <>
       <div>Última atualização: {UpdatedAt}</div>
-      <p>Versão do banco de dados: {Database.version}</p>
-      <p>
-        Número máximo de conexões do banco de dados: {Database.max_connections}
-      </p>
-      <p>Conexões ativas do banco de dados: {Database.opened_connections}</p>
+    </>
+  );
+}
+
+function DatabaseStatus() {
+  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+    refreshInterval: 2000,
+  });
+  let loadingText = "Carregando...";
+  let databaseStatusInformation = loadingText;
+
+  if (!isLoading && data) {
+    databaseStatusInformation = (
+      <>
+        <p>Versão do banco de dados: {data.dependencies.database.version}</p>
+        <p>
+          Número máximo de conexões do banco de dados:{" "}
+          {data.dependencies.database.max_connections}
+        </p>
+        <p>
+          Conexões ativas do banco de dados:{" "}
+          {data.dependencies.database.opened_connections}
+        </p>
+      </>
+    );
+  }
+  return (
+    <>
+      <h2>Database</h2>
+      <div>{databaseStatusInformation}</div>
     </>
   );
 }
