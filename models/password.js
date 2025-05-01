@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 
-const PEPPER = process.env.PEPPER || "Bell_Pepper";
+const PEPPER = process.env.PEPPER;
 
 async function hash(password) {
   const rounds = getNumberOfRounds();
