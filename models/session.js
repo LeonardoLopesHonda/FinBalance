@@ -1,4 +1,4 @@
-import database from "infra/database";
+// import database from "infra/database";
 import password from "./password";
 import user from "./user";
 import { ValidationError } from "infra/errors";
