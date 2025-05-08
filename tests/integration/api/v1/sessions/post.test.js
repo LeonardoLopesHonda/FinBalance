@@ -67,5 +67,36 @@ describe("POST /api/v1/users", () => {
       });
       expect(response.status).toBe(401);
     });
+
+    // Needs refactor to create the session and return the object
+    test("With different case 'email'", async () => {
+      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "newValidEmail",
+          email: "newValidEmail@gmail.com",
+          password: "senha123",
+        }),
+      });
+      expect(user1Response.status).toBe(201);
+
+      const session1Response = await fetch(
+        "http://localhost:3000/api/v1/sessions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "NewValidEmail@gmail.com",
+            password: "senha123",
+          }),
+        },
+      );
+      expect(session1Response.status).toBe(201);
+    });
   });
 });
