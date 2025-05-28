@@ -13,18 +13,9 @@ beforeAll(async () => {
 describe("POST /api/v1/users", () => {
   describe("Anonymous user", () => {
     test("With incorrect `email` but correct `password`", async () => {
-      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "incorrectEmail",
-          email: "incorrectEmail@gmail.com",
-          password: "senhaCorreta",
-        }),
+      const createdUser = await orchestrator.createUser({
+        password: "correctPassword",
       });
-      expect(user1Response.status).toBe(201);
 
       const session1Response = await fetch(
         "http://localhost:3000/api/v1/sessions",
@@ -34,8 +25,8 @@ describe("POST /api/v1/users", () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: "invalid.email@gmail.com",
-            password: "senhaCorreta",
+            email: "incorrectEmail@gmail.com",
+            password: createdUser.password,
           }),
         },
       );
@@ -52,18 +43,9 @@ describe("POST /api/v1/users", () => {
     });
 
     test("With correct `email` but incorrect `password`", async () => {
-      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "correctEmail",
-          email: "correct.email.test@gmail.com",
-          password: "senhaIncorreta",
-        }),
+      const createdUser = await orchestrator.createUser({
+        email: "correct.email.test@gmail.com",
       });
-      expect(user1Response.status).toBe(201);
 
       const response = await fetch("http://localhost:3000/api/v1/sessions", {
         method: "POST",
@@ -71,26 +53,15 @@ describe("POST /api/v1/users", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "validPassword@gmail.com",
-          password: "invalidPassword",
+          email: createdUser.email,
+          password: "incorrectPassword",
         }),
       });
       expect(response.status).toBe(401);
     });
 
     test("With incorrect `email` and incorrect `password`", async () => {
-      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "notRegisteredEmail",
-          email: "notRegisteredEmail@gmail.com",
-          password: "incorrectPassword",
-        }),
-      });
-      expect(user1Response.status).toBe(201);
+      await orchestrator.createUser({});
 
       const response = await fetch("http://localhost:3000/api/v1/sessions", {
         method: "POST",
@@ -98,7 +69,7 @@ describe("POST /api/v1/users", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "not.Registered.Email@gmail.com",
+          email: "incorrect.email@gmail.com",
           password: "incorrect.password",
         }),
       });
@@ -106,18 +77,10 @@ describe("POST /api/v1/users", () => {
     });
 
     test("With different case `email`", async () => {
-      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "newValidEmail",
-          email: "newValidEmail@gmail.com",
-          password: "senha123",
-        }),
+      await orchestrator.createUser({
+        email: "newValidEmail@gmail.com",
+        password: "validPassword",
       });
-      expect(user1Response.status).toBe(201);
 
       const session1Response = await fetch(
         "http://localhost:3000/api/v1/sessions",
@@ -128,7 +91,7 @@ describe("POST /api/v1/users", () => {
           },
           body: JSON.stringify({
             email: "NewValidEmail@gmail.com",
-            password: "senha123",
+            password: "validPassword",
           }),
         },
       );
