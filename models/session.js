@@ -1,25 +1,33 @@
-// import database from "infra/database";
-import password from "./password";
-import user from "./user";
-import { ValidationError } from "infra/errors";
+import database from "infra/database";
+import crypto from "crypto";
 
-async function create(userInputValues) {
-  const currentUser = await user.findOneByEmail(userInputValues.email);
-  await validatePassword(userInputValues.password, currentUser.password);
-}
+async function create(user) {
+  const newSession = await runInsertQuery(user);
+  return newSession;
 
-async function validatePassword(passedPassword, currentPassword) {
-  const isValidPassword = await password.compare(
-    passedPassword,
-    currentPassword,
-  );
+  async function runInsertQuery(user) {
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = getExpirationDate();
 
-  if (!isValidPassword) {
-    throw new ValidationError({
-      message: "O password informado está incorreto.",
-      action: "Utilize o password correto para realizar esta operação.",
-      statusCode: 401,
+    const results = await database.query({
+      text: `
+        INSERT INTO
+          sessions (session_token, user_id, expires_at)
+        VALUES
+          ($1, $2, $3)
+        RETURNING
+          *
+        ;`,
+      values: [token, user.id, expiresAt],
     });
+
+    return results.rows[0];
+  }
+
+  function getExpirationDate() {
+    const now = new Date();
+    now.setDate(now.getDate() + 1);
+    return now;
   }
 }
 

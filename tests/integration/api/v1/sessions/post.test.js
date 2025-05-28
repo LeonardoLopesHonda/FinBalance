@@ -1,4 +1,5 @@
 // import { version as uuidVersion } from "uuid";
+// import database from "infra/database";
 import orchestrator from "tests/orchestrator";
 // import user from "models/user";
 // import password from "models/password";
@@ -11,16 +12,16 @@ beforeAll(async () => {
 
 describe("POST /api/v1/users", () => {
   describe("Anonymous user", () => {
-    test("With invalid 'email'", async () => {
+    test("With incorrect `email` but correct `password`", async () => {
       const user1Response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: "validEmail",
-          email: "validEmail@gmail.com",
-          password: "senha123",
+          username: "incorrectEmail",
+          email: "incorrectEmail@gmail.com",
+          password: "senhaCorreta",
         }),
       });
       expect(user1Response.status).toBe(201);
@@ -33,24 +34,33 @@ describe("POST /api/v1/users", () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: "userWithInvalidEmail@gmail.com",
-            password: "senha123",
+            email: "invalid.email@gmail.com",
+            password: "senhaCorreta",
           }),
         },
       );
-      expect(session1Response.status).toBe(404);
+      expect(session1Response.status).toBe(401);
+
+      const sessionResponseBody = await session1Response.json();
+
+      expect(sessionResponseBody).toEqual({
+        name: "UnauthorizedError",
+        message: "Dados de autenticação não conferem.",
+        action: "Verifique se os dados enviados estão corretos.",
+        status_code: 401,
+      });
     });
 
-    test("With invalid 'password'", async () => {
+    test("With correct `email` but incorrect `password`", async () => {
       const user1Response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: "validPassword",
-          email: "validPassword@gmail.com",
-          password: "validPassword",
+          username: "correctEmail",
+          email: "correct.email.test@gmail.com",
+          password: "senhaIncorreta",
         }),
       });
       expect(user1Response.status).toBe(201);
@@ -68,8 +78,34 @@ describe("POST /api/v1/users", () => {
       expect(response.status).toBe(401);
     });
 
-    // Needs refactor to create the session and return the object
-    test("With different case 'email'", async () => {
+    test("With incorrect `email` and incorrect `password`", async () => {
+      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "notRegisteredEmail",
+          email: "notRegisteredEmail@gmail.com",
+          password: "incorrectPassword",
+        }),
+      });
+      expect(user1Response.status).toBe(201);
+
+      const response = await fetch("http://localhost:3000/api/v1/sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "not.Registered.Email@gmail.com",
+          password: "incorrect.password",
+        }),
+      });
+      expect(response.status).toBe(401);
+    });
+
+    test("With different case `email`", async () => {
       const user1Response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
@@ -97,6 +133,9 @@ describe("POST /api/v1/users", () => {
         },
       );
       expect(session1Response.status).toBe(201);
+
+      const response = await session1Response.json();
+      console.log(response);
     });
   });
 });
