@@ -1,11 +1,12 @@
 import database from "infra/database";
 import crypto from "crypto";
 
-async function create(user) {
-  const newSession = await runInsertQuery(user);
-  return newSession;
+async function create({ id, username }) {
+  const newSession = await runInsertQuery(id);
 
-  async function runInsertQuery(user) {
+  return { username, ...newSession };
+
+  async function runInsertQuery(userId) {
     const token = crypto.randomBytes(32).toString("hex");
     const expiresAt = getExpirationDate();
 
@@ -18,7 +19,7 @@ async function create(user) {
         RETURNING
           *
         ;`,
-      values: [token, user.id, expiresAt],
+      values: [token, userId, expiresAt],
     });
 
     return results.rows[0];

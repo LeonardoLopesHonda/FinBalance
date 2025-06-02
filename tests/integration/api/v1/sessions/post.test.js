@@ -78,6 +78,7 @@ describe("POST /api/v1/users", () => {
 
     test("With different case `email`", async () => {
       await orchestrator.createUser({
+        username: "validUsername",
         email: "newValidEmail@gmail.com",
         password: "validPassword",
       });
@@ -97,8 +98,16 @@ describe("POST /api/v1/users", () => {
       );
       expect(session1Response.status).toBe(201);
 
-      const response = await session1Response.json();
-      console.log(response);
+      const responseBody = await session1Response.json();
+      console.log(responseBody);
+      expect(responseBody).toEqual({
+        session_token: responseBody.session_token,
+        user_id: responseBody.user_id,
+        username: "validUsername",
+        created_at: responseBody.created_at,
+        updated_at: responseBody.updated_at,
+        expires_at: responseBody.expires_at,
+      });
     });
   });
 });
