@@ -27,7 +27,7 @@ async function create({ id, username }) {
 
   function getExpirationDate() {
     const now = new Date();
-    now.setDate(now.getDate() + 1);
+    now.setMinutes(now.getMinutes() + 20);
     return now;
   }
 }
