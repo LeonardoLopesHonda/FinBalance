@@ -1,12 +1,21 @@
 exports.up = (pgm) => {
   pgm.createTable("sessions", {
-    session_token: {
-      type: "text",
+    id: {
+      type: "uuid",
       primaryKey: true,
+      default: pgm.func("gen_random_uuid()"),
+    },
+    token: {
+      type: "varchar(96)",
+      notNull: true,
+      unique: true,
     },
     user_id: {
       type: "uuid",
-      references: "users",
+      notNull: true,
+    },
+    expires_at: {
+      type: "timestamptz",
       notNull: true,
     },
     // Why timestamp with timezone? https://justatheory.com/2012/04/postgres-use-timestamptz/
@@ -19,10 +28,6 @@ exports.up = (pgm) => {
       type: "timestamptz",
       notNull: true,
       default: pgm.func("timezone('utc', now())"),
-    },
-    expires_at: {
-      type: "timestamptz",
-      notNull: true,
     },
   });
 };
