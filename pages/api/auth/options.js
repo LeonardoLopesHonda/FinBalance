@@ -12,11 +12,6 @@ export const options = {
     CredentialProvider({
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username:",
-          type: "text",
-          placeholder: "SeuUsername",
-        },
         email: {
           label: "Email:",
           type: "text",
