@@ -40,20 +40,11 @@ export const options = {
     }),
   ],
   callbacks: {
-    async jwt({ token, anonymous_user, account }) {
-      if (anonymous_user && account?.provider !== "credentials") {
-        const existing = await user.findOneByEmail(anonymous_user.email);
-        if (!existing) {
-          const newUser = await user.create({
-            username: anonymous_user.username,
-            email: anonymous_user.email,
-            password: anonymous_user.password,
-            oauth: account.provider,
-          });
-          token.id = newUser.id;
-        } else {
-          token.id = existing.id;
-        }
+    // eslint-disable-next-line no-unused-vars
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
       }
 
       return token;
