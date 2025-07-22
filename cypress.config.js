@@ -11,5 +11,11 @@ module.exports = defineConfig({
         GitHubSocialLogin: GitHubSocialLogin,
       });
     },
+    env: {
+      GITHUB_USER: process.env.CYPRESS_TEST_OAUTH_USER,
+      GITHUB_PW: process.env.CYPRESS_TEST_OAUTH_PASSWORD,
+      COOKIE_NAME: process.env.CYPRESS_TEST_OAUTH_COOKIE_NAME,
+      SITE_NAME: process.env.CYPRESS_TEST_OAUTH_SITE_NAME,
+    },
   },
 });
