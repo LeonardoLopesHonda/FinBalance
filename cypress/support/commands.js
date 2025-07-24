@@ -23,3 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("createUser", (userObject = {}) => {
+  return cy.task("createUser", userObject);
+});
+
+Cypress.Commands.add("waitForAllServices", () => {
+  return cy.task("waitForAllServices");
+});
+
+Cypress.Commands.add("clearDatabase", () => {
+  return cy.task("clearDatabase");
+});
+
+Cypress.Commands.add("runPendingMigrations", () => {
+  return cy.task("runPendingMigrations");
+});

@@ -1,15 +1,50 @@
+// Load .env config to run db queries
+const dotenv = require("dotenv");
+dotenv.config({
+  path: ".env.development",
+});
+
 const { defineConfig } = require("cypress");
+
+// Uses Babel to transpile the ESM files such as orchestrator to CommonJS
+require("@babel/register")({
+  extensions: [".js"],
+  ignore: [/node_modules/],
+});
+
+// Handle paths with ESM files to prepare for CommonJS env
+require("./register-aliases");
+
 const { GitHubSocialLogin } = require("cypress-social-logins").plugins;
+
+// .default is used to recognize ESM exports
+const orchestrator = require("./tests/orchestrator.js").default;
 
 module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000",
     chromeWebSecurity: false,
-    // eslint-disable-next-line no-unused-vars
-    setupNodeEvents(on, config) {
+    supportFile: "cypress/support/e2e.js",
+    setupNodeEvents: async (on, config) => {
       on("task", {
         GitHubSocialLogin: GitHubSocialLogin,
+        async createUser(userData) {
+          return await orchestrator.createUser(userData);
+        },
+        async waitForAllServices() {
+          await orchestrator.waitForAllServices();
+          return null;
+        },
+        async clearDatabase() {
+          await orchestrator.clearDatabase();
+          return null;
+        },
+        async runPendingMigrations() {
+          await orchestrator.runPendingMigrations();
+          return null;
+        },
       });
+      return config;
     },
     env: {
       GITHUB_USER: process.env.CYPRESS_TEST_OAUTH_USER,

@@ -14,4 +14,12 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
+
+require("@babel/register")({
+  extensions: [".js"],
+  ignore: [/node_modules/],
+});
+
+require("../../register-aliases");
+
 import "./commands";

@@ -1,9 +1,18 @@
 /* eslint-disable jest/expect-expect */
 describe("Signin login with Credentials", () => {
+  before(() => {
+    cy.waitForAllServices();
+    cy.clearDatabase();
+    cy.runPendingMigrations();
+    cy.createUser({
+      email: "cypress.credentials@gmail.com",
+      password: "cypressCredentials",
+    });
+  });
   it("Sucessfully Signin with correct Credentials", () => {
     cy.visit("/status");
-    cy.get("input[name='email']").type("honda@gmail.com");
-    cy.get("input[name='password']").type("senha123");
+    cy.get("input[name='email']").type("cypress.credentials@gmail.com");
+    cy.get("input[name='password']").type("cypressCredentials");
 
     cy.get(":nth-child(2) > form > button").click();
 
@@ -36,7 +45,7 @@ describe("Signin login with OAuth", () => {
         password,
         loginUrl,
         cookieName,
-        headless: true,
+        headless: false,
         logs: false,
         isPopup: false,
         loginSelector: `form[action*="github"] button`,
