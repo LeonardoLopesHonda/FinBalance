@@ -45,7 +45,7 @@ describe("Signin login with OAuth", () => {
         password,
         loginUrl,
         cookieName,
-        headless: false,
+        headless: true,
         logs: false,
         isPopup: false,
         loginSelector: `form[action*="github"] button`,

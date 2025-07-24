@@ -17,11 +17,6 @@ jobs:
   cypress:
     name: Cypress Ubuntu
     runs-on: ubuntu-latest
-    env: 
-      CYPRESS_TEST_OAUTH_USER: ${{ secrets.CYPRESS_TEST_OAUTH_USER }},
-      CYPRESS_TEST_OAUTH_PASSWORD: ${{ secrets.CYPRESS_TEST_OAUTH_PASSWORD }},
-      CYPRESS_TEST_OAUTH_COOKIE_NAME: ${{ secrets.CYPRESS_TEST_OAUTH_COOKIE_NAME }},
-      CYPRESS_TEST_OAUTH_SITE_NAME: ${{ secrets.CYPRESS_TEST_OAUTH_SITE_NAME }},
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,3 +24,8 @@ jobs:
           node-version: "lts/hydrogen"
       - run: npm ci
       - run: npm run test:e2e
+        env: 
+          GITHUB_USER: ${{ secrets.CYPRESS_TEST_OAUTH_USER }},
+          GITHUB_PW: ${{ secrets.CYPRESS_TEST_OAUTH_PASSWORD }},
+          COOKIE_NAME: ${{ secrets.CYPRESS_TEST_OAUTH_COOKIE_NAME }},
+          SITE_NAME: ${{ secrets.CYPRESS_TEST_OAUTH_SITE_NAME }},

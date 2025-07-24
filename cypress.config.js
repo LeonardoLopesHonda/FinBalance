@@ -21,6 +21,12 @@ const { GitHubSocialLogin } = require("cypress-social-logins").plugins;
 const orchestrator = require("./tests/orchestrator.js").default;
 
 module.exports = defineConfig({
+  env: {
+    GITHUB_USER: process.env.GITHUB_USER,
+    GITHUB_PW: process.env.GITHUB_PW,
+    COOKIE_NAME: process.env.COOKIE_NAME,
+    SITE_NAME: process.env.SITE_NAME,
+  },
   e2e: {
     baseUrl: "http://localhost:3000",
     chromeWebSecurity: false,
@@ -29,6 +35,11 @@ module.exports = defineConfig({
       on("task", {
         GitHubSocialLogin: GitHubSocialLogin,
         async createUser(userData) {
+          console.log("Loaded GITHUB_USER:", process.env.GITHUB_USER);
+          console.log("Loaded GITHUB_PW:", process.env.GITHUB_PW);
+          console.log("Loaded COOKIE_NAME:", process.env.COOKIE_NAME);
+          console.log("Loaded SITE_NAME:", process.env.SITE_NAME);
+
           return await orchestrator.createUser(userData);
         },
         async waitForAllServices() {
@@ -45,12 +56,6 @@ module.exports = defineConfig({
         },
       });
       return config;
-    },
-    env: {
-      GITHUB_USER: process.env.CYPRESS_TEST_OAUTH_USER,
-      GITHUB_PW: process.env.CYPRESS_TEST_OAUTH_PASSWORD,
-      COOKIE_NAME: process.env.CYPRESS_TEST_OAUTH_COOKIE_NAME,
-      SITE_NAME: process.env.CYPRESS_TEST_OAUTH_SITE_NAME,
     },
   },
 });
