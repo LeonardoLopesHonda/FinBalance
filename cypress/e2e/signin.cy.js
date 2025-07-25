@@ -45,7 +45,7 @@ describe("Signin login with OAuth", () => {
         password,
         loginUrl,
         cookieName,
-        headless: true,
+        headless: false,
         logs: false,
         isPopup: false,
         loginSelector: `form[action*="github"] button`,
@@ -55,12 +55,14 @@ describe("Signin login with OAuth", () => {
       return cy
         .task("GitHubSocialLogin", socialLoginOptions)
         .then(({ cookies }) => {
-          cookies.forEach((cookie) => {
-            cy.setCookie(cookie.name, cookie.value, {
-              domain: cookie.domain,
-              path: cookie.path,
-              secure: cookie.secure,
-              httpOnly: cookie.httpOnly,
+          cy.then(() => {
+            cookies.forEach((cookie) => {
+              cy.setCookie(cookie.name, cookie.value, {
+                domain: cookie.domain,
+                path: cookie.path,
+                secure: cookie.secure,
+                httpOnly: cookie.httpOnly,
+              });
             });
           });
         });
