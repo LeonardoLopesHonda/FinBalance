@@ -33,6 +33,11 @@ describe("Signin login with Credentials", () => {
 });
 
 describe("Signin login with OAuth", () => {
+  before(() => {
+    cy.waitForAllServices();
+    cy.clearDatabase();
+    cy.runPendingMigrations();
+  });
   it("Sucessfully Signin with Github OAuth", () => {
     const username = Cypress.env("GITHUB_USER");
     const password = Cypress.env("GITHUB_PW");
