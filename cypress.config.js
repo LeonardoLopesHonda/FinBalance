@@ -35,11 +35,6 @@ module.exports = defineConfig({
       on("task", {
         GitHubSocialLogin: GitHubSocialLogin,
         async createUser(userData) {
-          console.log("Loaded GITHUB_USER:", process.env.GITHUB_USER);
-          console.log("Loaded GITHUB_PW:", process.env.GITHUB_PW);
-          console.log("Loaded COOKIE_NAME:", process.env.COOKIE_NAME);
-          console.log("Loaded SITE_NAME:", process.env.SITE_NAME);
-
           return await orchestrator.createUser(userData);
         },
         async waitForAllServices() {

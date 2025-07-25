@@ -55,13 +55,7 @@ describe("Signin login with OAuth", () => {
       return cy
         .task("GitHubSocialLogin", socialLoginOptions)
         .then(({ cookies }) => {
-          cy.log("Returned cookies:");
-          cookies.forEach((c) => cy.log(`${c.name} from ${c.domain}`));
-
-          const cookie = cookies.find(
-            (cookie) =>
-              cookie.name === cookieName && cookie.domain.includes("localhost"),
-          );
+          const cookie = cookies.find((cookie) => cookie.name === cookieName);
 
           if (!cookie) throw new Error("Login cookie not found");
 
