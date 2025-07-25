@@ -55,16 +55,13 @@ describe("Signin login with OAuth", () => {
       return cy
         .task("GitHubSocialLogin", socialLoginOptions)
         .then(({ cookies }) => {
-          const cookie = cookies.find((cookie) => cookie.name === cookieName);
-
-          if (!cookie) throw new Error("Login cookie not found");
-
-          cy.setCookie(cookie.name, cookie.value, {
-            domain: cookie.domain,
-            expiry: cookie.expires,
-            httpOnly: cookie.httpOnly,
-            path: cookie.path,
-            secure: cookie.secure,
+          cookies.forEach((cookie) => {
+            cy.setCookie(cookie.name, cookie.value, {
+              domain: cookie.domain,
+              path: cookie.path,
+              secure: cookie.secure,
+              httpOnly: cookie.httpOnly,
+            });
           });
         });
     });

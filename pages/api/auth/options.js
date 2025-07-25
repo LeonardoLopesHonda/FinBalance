@@ -6,8 +6,8 @@ import password from "models/password";
 export const options = {
   providers: [
     GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GHUB_ID,
+      clientSecret: process.env.GHUB_SECRET,
     }),
     CredentialProvider({
       name: "Credentials",
