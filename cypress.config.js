@@ -20,12 +20,15 @@ const { GitHubSocialLogin } = require("cypress-social-logins").plugins;
 // .default is used to recognize ESM exports
 const orchestrator = require("./tests/orchestrator.js").default;
 
+console.log(!!process.env.CYPRESS_GITHUB_USER);
+console.log(!!process.env.CYPRESS_GITHUB_PASSWORD);
+
 module.exports = defineConfig({
   env: {
-    GITHUB_USER: process.env.GITHUB_USER,
-    GITHUB_PW: process.env.GITHUB_PW,
-    COOKIE_NAME: process.env.COOKIE_NAME,
-    SITE_NAME: process.env.SITE_NAME,
+    GITHUB_USER: process.env.CYPRESS_GITHUB_USER,
+    GITHUB_PASSWORD: process.env.CYPRESS_GITHUB_PASSWORD,
+    COOKIE_NAME: process.env.CYPRESS_COOKIE_NAME,
+    SITE_NAME: process.env.CYPRESS_SITE_NAME,
   },
   e2e: {
     baseUrl: "http://localhost:3000",

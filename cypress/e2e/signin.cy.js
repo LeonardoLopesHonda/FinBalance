@@ -40,9 +40,22 @@ describe("Signin login with OAuth", () => {
   });
   it("Sucessfully Signin with Github OAuth", () => {
     const username = Cypress.env("GITHUB_USER");
-    const password = Cypress.env("GITHUB_PW");
+    const password = Cypress.env("GITHUB_PASSWORD");
     const loginUrl = Cypress.env("SITE_NAME");
     const cookieName = Cypress.env("COOKIE_NAME");
+
+    if (!username) {
+      throw new Error("Missing USERNAME");
+    }
+    if (!password) {
+      throw new Error("Missing PW");
+    }
+    // if (!loginUrl) {
+    //   throw new Error("Missing LOGIN URL");
+    // }
+    // if (!cookieName) {
+    //   throw new Error("Missing COOKIE NAME");
+    // }
 
     cy.session("github-oauth", () => {
       const socialLoginOptions = {
@@ -72,7 +85,6 @@ describe("Signin login with OAuth", () => {
           });
         });
     });
-
     cy.visit("/status");
     cy.getCookie(cookieName).should("exist");
     cy.url({ timeout: 10000 }).should("include", "/status");
