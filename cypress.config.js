@@ -1,11 +1,8 @@
 // Load .env config to run db queries
 const dotenv = require("dotenv");
-
-if (process.env.NODE_ENV === "development") {
-  dotenv.config({
-    path: ".env.development",
-  });
-}
+dotenv.config({
+  path: ".env.development",
+});
 
 const { defineConfig } = require("cypress");
 
@@ -42,8 +39,6 @@ module.exports = defineConfig({
         },
         async waitForAllServices() {
           await orchestrator.waitForAllServices();
-          console.log("OAuth user:", process.env.GITHUB_USER);
-          console.log("OAuth password:", process.env.GITHUB_PW);
           return null;
         },
         async clearDatabase() {
