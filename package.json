@@ -21,7 +21,7 @@
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "next lint --dir .",
     "concurrent:next-jest": "concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand\"",
-    "concurrent:next-cypress": "concurrently -n next,cypress --hide next -k -s command-cypress \"next dev\" \"npm run test:e2e:run\"",
+    "concurrent:next-cypress": "concurrently -n next,cypress --hide next -k -s command-cypress \"next dev\" \"wait-on http://localhost:3000 && npm run test:e2e:run\"",
     "prepare": "husky",
     "commit": "cz"
   },

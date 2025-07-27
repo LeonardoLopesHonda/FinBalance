@@ -38,7 +38,6 @@ module.exports = defineConfig({
           launchOptions.args.push("--disable-gpu");
           launchOptions.args.push("--disable-dev-shm-usage");
         }
-
         return launchOptions;
       }),
         on("task", {
