@@ -44,26 +44,13 @@ describe("Signin login with OAuth", () => {
     const loginUrl = Cypress.env("SITE_NAME");
     const cookieName = Cypress.env("COOKIE_NAME");
 
-    if (!username) {
-      throw new Error("Missing USERNAME");
-    }
-    if (!password) {
-      throw new Error("Missing PW");
-    }
-    // if (!loginUrl) {
-    //   throw new Error("Missing LOGIN URL");
-    // }
-    // if (!cookieName) {
-    //   throw new Error("Missing COOKIE NAME");
-    // }
-
     cy.session("github-oauth", () => {
       const socialLoginOptions = {
         username,
         password,
         loginUrl,
         cookieName,
-        headless: false,
+        headless: true,
         logs: false,
         isPopup: false,
         loginSelector: `form[action*="github"] button`,
