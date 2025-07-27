@@ -20,9 +20,6 @@ const { GitHubSocialLogin } = require("cypress-social-logins").plugins;
 // .default is used to recognize ESM exports
 const orchestrator = require("./tests/orchestrator.js").default;
 
-console.log(!!process.env.CYPRESS_GITHUB_USER);
-console.log(!!process.env.CYPRESS_GITHUB_PASSWORD);
-
 module.exports = defineConfig({
   env: {
     GITHUB_USER: process.env.CYPRESS_GITHUB_USER,
@@ -35,24 +32,33 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     supportFile: "cypress/support/e2e.js",
     setupNodeEvents: async (on, config) => {
-      on("task", {
-        GitHubSocialLogin: GitHubSocialLogin,
-        async createUser(userData) {
-          return await orchestrator.createUser(userData);
-        },
-        async waitForAllServices() {
-          await orchestrator.waitForAllServices();
-          return null;
-        },
-        async clearDatabase() {
-          await orchestrator.clearDatabase();
-          return null;
-        },
-        async runPendingMigrations() {
-          await orchestrator.runPendingMigrations();
-          return null;
-        },
-      });
+      on("before:browser:launch", (browser = {}, launchOptions) => {
+        if (browser.name === "chrome" || browser.name === "chromium") {
+          launchOptions.args.push("--no-sandbox");
+          launchOptions.args.push("--disable-gpu");
+          launchOptions.args.push("--disable-dev-shm-usage");
+        }
+
+        return launchOptions;
+      }),
+        on("task", {
+          GitHubSocialLogin: GitHubSocialLogin,
+          async createUser(userData) {
+            return await orchestrator.createUser(userData);
+          },
+          async waitForAllServices() {
+            await orchestrator.waitForAllServices();
+            return null;
+          },
+          async clearDatabase() {
+            await orchestrator.clearDatabase();
+            return null;
+          },
+          async runPendingMigrations() {
+            await orchestrator.runPendingMigrations();
+            return null;
+          },
+        });
       return config;
     },
   },
