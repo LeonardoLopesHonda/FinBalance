@@ -26,11 +26,20 @@ module.exports = defineConfig({
     GITHUB_PASSWORD: process.env.CYPRESS_GITHUB_PASSWORD,
     COOKIE_NAME: process.env.CYPRESS_COOKIE_NAME,
     SITE_NAME: process.env.CYPRESS_SITE_NAME,
+    chromeOptions: {
+      args: ["--no-sandbox", "--disable-dev-shm-usage"],
+    },
   },
   e2e: {
     baseUrl: "http://localhost:3000",
     chromeWebSecurity: false,
     supportFile: "cypress/support/e2e.js",
+    video: false,
+    screenshotOnRunFailure: false,
+    retries: {
+      runMode: 2,
+    },
+    browser: "chrome",
     setupNodeEvents: async (on, config) => {
       on("before:browser:launch", (browser = {}, launchOptions) => {
         if (browser.name === "chrome" || browser.name === "chromium") {
@@ -39,25 +48,25 @@ module.exports = defineConfig({
           launchOptions.args.push("--disable-dev-shm-usage");
         }
         return launchOptions;
-      }),
-        on("task", {
-          GitHubSocialLogin: GitHubSocialLogin,
-          async createUser(userData) {
-            return await orchestrator.createUser(userData);
-          },
-          async waitForAllServices() {
-            await orchestrator.waitForAllServices();
-            return null;
-          },
-          async clearDatabase() {
-            await orchestrator.clearDatabase();
-            return null;
-          },
-          async runPendingMigrations() {
-            await orchestrator.runPendingMigrations();
-            return null;
-          },
-        });
+      });
+      on("task", {
+        GitHubSocialLogin: GitHubSocialLogin,
+        async createUser(userData) {
+          return await orchestrator.createUser(userData);
+        },
+        async waitForAllServices() {
+          await orchestrator.waitForAllServices();
+          return null;
+        },
+        async clearDatabase() {
+          await orchestrator.clearDatabase();
+          return null;
+        },
+        async runPendingMigrations() {
+          await orchestrator.runPendingMigrations();
+          return null;
+        },
+      });
       return config;
     },
   },
