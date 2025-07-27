@@ -29,6 +29,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/hydrogen"
+      - run: sudo apt-get install chromium-browser
       - run: npm ci
       - run: npm run test:e2e
         
