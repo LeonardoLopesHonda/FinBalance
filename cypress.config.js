@@ -41,12 +41,11 @@ module.exports = defineConfig({
     },
     browser: "chrome",
     setupNodeEvents: async (on, config) => {
+      // eslint-disable-next-line no-unused-vars
       on("before:browser:launch", (browser = {}, launchOptions) => {
-        if (browser.name === "chrome" || browser.name === "chromium") {
-          launchOptions.args.push("--no-sandbox");
-          launchOptions.args.push("--disable-gpu");
-          launchOptions.args.push("--disable-dev-shm-usage");
-        }
+        launchOptions.preferences.webPreferences.nodeIntegration = true;
+        launchOptions.preferences.webPreferences.contextIsolation = false;
+        launchOptions.preferences.devTools = true;
         return launchOptions;
       });
       on("task", {

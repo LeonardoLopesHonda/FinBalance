@@ -10,7 +10,7 @@
     "test:watch": "jest --watchAll --runInBand --verbose",
     "test:e2e": "npm run services:up && npm run concurrent:next-cypress",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run --browser chromium --headless",
+    "test:e2e:run": "cypress run --browser electron",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "docker compose -f infra/compose.yaml stop",
     "services:down": "docker compose -f infra/compose.yaml down",
