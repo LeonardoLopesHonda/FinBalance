@@ -43,6 +43,10 @@ module.exports = defineConfig({
         launchOptions.preferences.webPreferences.nodeIntegration = true;
         launchOptions.preferences.webPreferences.contextIsolation = false;
         launchOptions.preferences.devTools = true;
+        if (browser.family === "chromium") {
+          launchOptions.args.push("--no-sandbox");
+        }
+        console.log("browser", browser, "launchOptions", launchOptions);
         return launchOptions;
       });
       on("task", {

@@ -29,6 +29,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/hydrogen"
+      - run: sudo apt update
+      - run: sudo apt upgrade
       - run: npm ci
       - run: npm run test:e2e
         
