@@ -26,9 +26,6 @@ module.exports = defineConfig({
     GITHUB_PASSWORD: process.env.CYPRESS_GITHUB_PASSWORD,
     COOKIE_NAME: process.env.CYPRESS_COOKIE_NAME,
     SITE_NAME: process.env.CYPRESS_SITE_NAME,
-    chromeOptions: {
-      args: ["--no-sandbox", "--disable-dev-shm-usage"],
-    },
   },
   e2e: {
     baseUrl: "http://localhost:3000",
