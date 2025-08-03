@@ -40,14 +40,7 @@ module.exports = defineConfig({
     setupNodeEvents: async (on, config) => {
       // eslint-disable-next-line no-unused-vars
       on("before:browser:launch", (browser = {}, launchOptions) => {
-        launchOptions.preferences.webPreferences.nodeIntegration = true;
-        launchOptions.preferences.webPreferences.contextIsolation = false;
-        launchOptions.preferences.devTools = true;
-        if (browser.family === "chromium") {
-          launchOptions.args.push("--no-sandbox");
-        }
-        console.log("browser", browser, "launchOptions", launchOptions);
-        return launchOptions;
+        console.log(launchOptions.args);
       });
       on("task", {
         GitHubSocialLogin: GitHubSocialLogin,
