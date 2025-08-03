@@ -21,6 +21,7 @@ const { GitHubSocialLogin } = require("cypress-social-logins").plugins;
 const orchestrator = require("./tests/orchestrator.js").default;
 
 module.exports = defineConfig({
+  projectId: "vpiwjj",
   env: {
     GITHUB_USER: process.env.CYPRESS_GITHUB_USER,
     GITHUB_PASSWORD: process.env.CYPRESS_GITHUB_PASSWORD,
