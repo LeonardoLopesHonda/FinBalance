@@ -14,3 +14,25 @@ jobs:
           node-version: "lts/hydrogen"
       - run: npm ci
       - run: npm test
+  cypress:
+    name: Cypress Ubuntu
+    runs-on: ubuntu-latest
+    env: 
+      CYPRESS_GITHUB_USER: ${{ secrets.GHUB_OAUTH_USER }}
+      CYPRESS_GITHUB_PASSWORD: ${{ secrets.GHUB_OAUTH_PASSWORD }}
+      CYPRESS_COOKIE_NAME: "next-auth.session-token"
+      CYPRESS_SITE_NAME: "http://localhost:3000/status"
+      GHUB_ID: ${{ secrets.GHUB_ID }}
+      GHUB_SECRET: ${{ secrets.GHUB_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/hydrogen"
+          cache: 'npm'
+      - uses: cypress-io/github-action@v6
+        with:
+          install: true
+          start: npm run dev
+          wait-on: http://localhost:3000/status
+          browser: electron

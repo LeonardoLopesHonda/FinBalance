@@ -9,7 +9,7 @@ async function fetchAPI(key) {
 export default function StatusPage() {
   return (
     <>
-      <h1>Status</h1>
+      <h1 id="status">Status</h1>
       <UpdatedAt />
       <DatabaseStatus />
     </>
