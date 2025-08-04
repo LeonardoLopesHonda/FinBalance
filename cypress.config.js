@@ -32,17 +32,11 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000",
     chromeWebSecurity: false,
     supportFile: "cypress/support/e2e.js",
-    video: false,
-    screenshotOnRunFailure: false,
     retries: {
       runMode: 2,
     },
     browser: "chrome",
     setupNodeEvents: async (on, config) => {
-      // eslint-disable-next-line no-unused-vars
-      on("before:browser:launch", (browser = {}, launchOptions) => {
-        console.log(launchOptions.args);
-      });
       on("task", {
         GitHubSocialLogin: GitHubSocialLogin,
         async createUser(userData) {
